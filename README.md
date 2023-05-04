@@ -25,7 +25,7 @@ Dependencies : you need to have python 3 and turtle.
 
 
 ```bash
-  python 3.x is required
+  python 3. is required
   pip install turtle
 ```
     
