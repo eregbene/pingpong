@@ -1,99 +1,125 @@
+
+# Import required library
 import turtle
+ 
+ 
+# Create screen
+sc = turtle.Screen()
+sc.title("Pong by Nuru and benedict")
+sc.bgcolor("purple")
+sc.setup(width=800, height=600)
+sc.tracer(0)
+ 
+ 
+# Left paddle
+left_pad = turtle.Turtle()
+left_pad.speed(0)
+left_pad.shape("square")
+left_pad.color("black")
+left_pad.shapesize(stretch_wid=5, stretch_len=1)
+left_pad.penup()
+left_pad.goto(-350, 0)
+ 
+ 
+# Right paddle
+right_pad = turtle.Turtle()
+right_pad.speed(0)
+right_pad.shape("square")
+right_pad.color("black")
+right_pad.shapesize(stretch_wid=5, stretch_len=1)
+right_pad.penup()
+right_pad.goto(350, 0)
+ 
+ 
+# Ball of circle shape
+hit_ball = turtle.Turtle()
+hit_ball.speed(0)
+hit_ball.shape("circle")
+hit_ball.color("blue")
+hit_ball.penup()
+hit_ball.goto(0, 0)
+hit_ball.dx = 0.2
+hit_ball.dy = -0.2
+ 
 
-win = turtle.Screen()
-win.title("Pong By NURU and benedict")
-win.bgcolor("purple")
-win.setup(width=800, height=600)
-win.tracer(0)
+# Initialize the score
+left_player = 0
+right_player = 0
+ 
+ 
+# Displays the score
+sketch = turtle.Turtle()
+sketch.speed(0)
+sketch.color("blue")
+sketch.penup()
+sketch.hideturtle()
+sketch.goto(0, 260)
+sketch.write("Left_player : 0    Right_player: 0", align="center", font=("Courier", 24, "normal"))
 
-
-# Paddle A
-paddle_a = turtle.Turtle()
-paddle_a.speed(0)
-paddle_a.shape("square")
-paddle_a.color("white")
-paddle_a.shapesize(stretch_wid=5, stretch_len=1)
-paddle_a.penup()
-paddle_a.goto(-350, 0)
-
-
-# Paddle B
-paddle_b = turtle.Turtle()
-paddle_b.speed(0)
-paddle_b.shape("square")
-paddle_b.color("white")
-paddle_b.shapesize(stretch_wid=5, stretch_len=1)
-paddle_b.penup()
-paddle_b.goto(350, 0)
-
-
-# Ball Creating the Ball
-ball = turtle.Turtle()
-ball.speed(0)
-ball.shape("circle")
-ball.color("white")
-ball.penup()
-ball.goto(0, 0)
-ball.dx = 0.2
-ball.dy = -0.2
-
-# Function
-def paddle_a_up():
-    y = paddle_a.ycor()
+# Functions to move paddle vertically
+def paddleaup():
+    y = left_pad.ycor()
     y += 20
-    paddle_a.sety(y)
-
-def paddle_a_down():
-    y = paddle_a.ycor()
+    left_pad.sety(y)
+ 
+def paddleadown():
+    y = left_pad.ycor()
     y -= 20
-    paddle_a.sety(y)
-
-def paddle_b_up():
-    y = paddle_b.ycor()
+    left_pad.sety(y)
+ 
+ 
+def paddlebup():
+    y = right_pad.ycor()
     y += 20
-    paddle_b.sety(y)
-
-def paddle_b_down():
-    y = paddle_b.ycor()
+    right_pad.sety(y)
+ 
+ 
+def paddlebdown():
+    y = right_pad.ycor()
     y -= 20
-    paddle_b.sety(y)
+    right_pad.sety(y)
+ 
+ 
+# Keyboard bindings
+sc.listen()
+sc.onkeypress(paddleaup, "w")
+sc.onkeypress(paddleadown, "s")
+sc.onkeypress(paddlebup, "Up")
+sc.onkeypress(paddlebdown, "Down")
 
-# Keyboard binding
-win.listen()
-win.onkeypress(paddle_a_up, "w")
-win.onkeypress(paddle_a_down, "s")
-win.onkeypress(paddle_b_up, "Up")
-win.onkeypress(paddle_b_down, "Down")
-
-
-# Main loop
 while True:
-    win.update()
-
-    # Move the ball
-    ball.setx(ball.xcor() + ball.dx)
-    ball.sety(ball.ycor() + ball.dy)
-
-    # Border checking
-    if ball.ycor() > 290:
-        ball.sety(290)
-        ball.dy *= -1
-
-    if ball.ycor() < -290:
-        ball.sety(-290)
-        ball.dy *= -1
-
-    if ball.xcor() > 390:
-        ball.goto(0, 0)
-        ball.dx *= -1
-
-    if ball.xcor() < -390:
-        ball.goto(0, 0)
-        ball.dx *= -1
-
-    # Paddle and ball collisions
-    if ball.xcor() > 340 and (ball.ycor() < paddle_b.ycor() + 50 and ball.ycor() > paddle_b.ycor() - 50):
-        ball.dx *= -1
-
-    if ball.xcor() < -340 and (ball.ycor() < paddle_a.ycor() + 50 and ball.ycor() > paddle_a.ycor() -50):
-        ball.dx *= -1
+    sc.update()
+ 
+    hit_ball.setx(hit_ball.xcor()+hit_ball.dx)
+    hit_ball.sety(hit_ball.ycor()+hit_ball.dy)
+ 
+    # Checking borders
+    if hit_ball.ycor() > 280:
+        hit_ball.sety(280)
+        hit_ball.dy *= -1
+ 
+    if hit_ball.ycor() < -280:
+        hit_ball.sety(-280)
+        hit_ball.dy *= -1
+ 
+    if hit_ball.xcor() > 500:
+        hit_ball.goto(0, 0)
+        hit_ball.dy *= -1
+        left_player += 1
+        sketch.clear()
+        sketch.write("Left_player : {}    Right_player: {}".format( left_player, right_player), align="center",font=("Courier", 24, "normal"))
+ 
+    if hit_ball.xcor() < -500:
+        hit_ball.goto(0, 0)
+        hit_ball.dy *= -1
+        right_player += 1
+        sketch.clear()
+        sketch.write("Left_player : {}    Right_player: {}".format( left_player, right_player), align="center",font=("Courier", 24, "normal"))
+ 
+    if (hit_ball.xcor() > 360 and hit_ball.xcor() < 370) and (hit_ball.ycor() < right_pad.ycor()+40 and hit_ball.ycor() > right_pad.ycor()-40):
+        hit_ball.setx(360) 
+        hit_ball.dx*=-1
+    if (hit_ball.xcor()<-360 and hit_ball.xcor()>-370) and(hit_ball.ycor()<left_pad.ycor()+40 and hit_ball.ycor()>left_pad.ycor()-40):
+        hit_ball.setx(-360)
+        hit_ball.dx*=-1
+        
